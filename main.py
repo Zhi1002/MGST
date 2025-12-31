@@ -81,15 +81,15 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Preprocess expression matrix
-    expressionFilename = "E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/expression_matrix.csv"
+    expressionFilename = "E:/DLPFC/151507/expression_matrix.csv"
     gene_expression_data = pd.read_csv(expressionFilename, index_col=0)
     print(gene_expression_data.shape)
     processed_df = preprocessingCSV(gene_expression_data)
 
-    # processed_df.to_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/Hp.csv")
+    # processed_df.to_csv("E:/DLPFC/151507/Hp.csv")
     print('completed')
     # Load spatial coordinate data (ensure rows correspond to gene data)
-    obs_df = pd.read_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/metadata.csv")
+    obs_df = pd.read_csv("E:/DLPFC/151507/metadata.csv")
     spatial_coords = obs_df[['row', 'col']].values
 
     # Data augmentation: augment gene expression data based on spatial information
@@ -109,11 +109,11 @@ if __name__ == '__main__':
     feature_spots = processed_df.T.dot(pca_df).astype(float)
     print("feature_spots shape:", feature_spots.shape)
     feature_spots = pd.DataFrame(feature_spots)
-    feature_spots.to_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/feature_spots.csv",
+    feature_spots.to_csv("E:/DLPFC/151507/feature_spots.csv",
                            index=False, header=False)
 
     # Load spatial coordinates
-    obs_df = pd.read_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/metadata.csv")
+    obs_df = pd.read_csv("E:/151507/metadata.csv")
     spatial_data = obs_df[['row', 'col']].values
     print("Spatial data shape:", spatial_data.shape)
     # Build adjacency matrix using improved method
@@ -123,11 +123,11 @@ if __name__ == '__main__':
 
     # Perform high-dimensional positional encoding on spatial coordinates
     features_spatial = positional_encoding(spatial_data, output_dim=32)
-    pd.DataFrame(features_spatial).to_csv('E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/features_spatial.csv',
+    pd.DataFrame(features_spatial).to_csv('E:/DLPFC/151507/features_spatial.csv',
                                             index=False, header=False)
 
     # Load image file
-    image_path = "E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/spatial/tissue_hires_image.png"
+    image_path = "E:/DLPFC/151507/spatial/tissue_hires_image.png"
     image = Image.open(image_path)
 
     # Load CNN model
@@ -143,7 +143,7 @@ if __name__ == '__main__':
         features.append(feature)
 
     feature_figure = pd.DataFrame(features)
-    feature_figure.to_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/feature_figure.csv",
+    feature_figure.to_csv("E:/DLPFC/151507/feature_figure.csv",
                            index=False, header=False)
 
     def perform_pca_on_features(feature_df, n_components):
@@ -176,9 +176,9 @@ if __name__ == '__main__':
     A1_normalized = row_normalize(A1)
     A2_normalized = row_normalize(A2)
 
-    save_adjacency_matrix_to_csv(A1_normalized, "E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/adj_gene.csv")
-    save_adjacency_matrix_to_csv(A2_normalized, "E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/adj_spot.csv")
-    pd.DataFrame(A3_dense).to_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/adj_image1.csv",
+    save_adjacency_matrix_to_csv(A1_normalized, "E:/DLPFC/151507/adj_gene.csv")
+    save_adjacency_matrix_to_csv(A2_normalized, "E:/DLPFC/151507/adj_spot.csv")
+    pd.DataFrame(A3_dense).to_csv("E:/DLPFC/151507/adj_image1.csv",
                                   index=False, header=False)
 
     print("Feature matrix shapes:")
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     A3_tensor = torch.tensor(A3_dense, device=device, dtype=torch.float32)
 
     # Load true labels
-    true_labels = pd.read_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/metadata.csv")['layer_guess'].values
+    true_labels = pd.read_csv("E:/DLPFC/151507/metadata.csv")['layer_guess'].values
     true_labels_encoded = LabelEncoder().fit_transform(true_labels)
     true_labels = true_labels_encoded + 1
 
@@ -231,7 +231,7 @@ if __name__ == '__main__':
         'spot_name': spot_names,
         'cluster': best_labels
     })
-    best_labels_df.to_csv("E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/BayesSpace.csv", index=False)
+    best_labels_df.to_csv("E:/DLPFC/151507/BayesSpace/BayesSpace.csv", index=False)
 
     import matplotlib
 
@@ -290,8 +290,9 @@ if __name__ == '__main__':
     spatial_coords = obs_df[['imagerow', 'imagecol']].values  # Get spatial coordinates
 
     # Plot clustering results on original slice image
-    image_path = "E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/spatial/tissue_hires_image.png"
+    image_path = "E:/DLPFC/151507/spatial/tissue_hires_image.png"
     plot_spatial_clusters_on_image(image_path, spatial_coords, best_labels,
                                    title="Optimal Spatial Clusters on Image",
-                                   save_path="E:/jsj/user06/ST/stDCL_data/stDCL/DLPFC/151507/BayesSpace/optimal_spatial_clusters_on_image.png")
+                                   save_path="E:/DLPFC/151507/BayesSpace/optimal_spatial_clusters_on_image.png")
+
 
