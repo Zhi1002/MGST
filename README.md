@@ -1,7 +1,6 @@
 # MGST：A Multi-modal Graph Fusion-Driven Framework for Spatial Transcriptomics Region Identification and Functional Microenvironment Analysis
 # Overview
-    Spatial transcriptomics technology enables the systematic acquisition of high-throughput gene expression data on a genome-wide scale while preserving the spatial 
-information of tissues in situ, offering significant opportunities to uncover the structural and functional heterogeneity of tissue microenvironments. Existing methods for 
+ Spatial transcriptomics technology enables the systematic acquisition of high-throughput gene expression data on a genome-wide scale while preserving the spatial information of tissues in situ, offering significant opportunities to uncover the structural and functional heterogeneity of tissue microenvironments. Existing methods for 
 spatial domain identification face limitations in multimodal collaboration and dynamic graph modeling, making it difficult to fully incorporate spatial, expression, and 
 morphological information, and often suffer from interference due to high-dimensional noise and data sparsity. In this study, we propose the MGST framework, which leverages 
 a multimodal graph fusion strategy to effectively integrate spatial location, gene expression, and tissue morphology information. The framework employs a dynamic adaptive 
@@ -10,6 +9,7 @@ expression discrimination and generalization performance. Evaluations on multipl
 MGST in spatial domain identification. Moreover, MGST not only accurately identifies tumor subtypes associated with immune suppression and metabolic adaptation in breast 
 cancer but also reveals functional units regulated by calcium signaling in the mouse forebrain, providing a reliable analytical framework for systematically unveiling the 
 complex heterogeneity of tissue microenvironments.
+
 # Overview of the repository
 image.py    This file contains functions related to image processing, particularly for extracting features from images and performing cropping operations.
 main.py	    This file serves as the main entry point for the script and coordinates the data processing, feature extraction, and model training.
