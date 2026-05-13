@@ -18,6 +18,7 @@ MLPmodel.py	Defines the MLPFusion class, which is a Multi-Layer Perceptron (MLP)
 spatial.py	Contains functions related to spatial data processing
 VAEmodel.py	Defines the GAE_VAE class, which is a Graph Autoencoder-Variational Autoencoder (GAE-VAE) model used for dimensionality reduction and clustering of graph- 
             structured data.
+Run_MRE.py:Sample Data Test File. We can simply modify the path and run it directly
 # Overview of the repository
 The DLPFC dataset (http://research.libd.org/spatialLIBD)
 human breast cancer and mouse brain FFPE samples (https://db.cngb.org/stomics/datasets/)
