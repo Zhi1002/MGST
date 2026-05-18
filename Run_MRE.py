@@ -17,7 +17,7 @@ from sklearn.neighbors import NearestNeighbors
 import leidenalg
 import igraph as ig
 from sklearn.metrics.pairwise import cosine_similarity
-from tqdm import tqdm  # 进度条
+from tqdm import tqdm  
 
 def augment_gene_data(data, spatial_coords, Adj_WT, neighbour_k=10):
     knn = NearestNeighbors(n_neighbors=neighbour_k, metric='euclidean')
@@ -330,7 +330,7 @@ if __name__ == '__main__':
     spatial_data = obs_df[['row', 'col']].values
 
     gene_data = processed_df.values
-    gene_data_augmented = augment_gene_data(gene_data, spatial_data, Adj_WT=0.3, neighbour_k=10)
+    gene_data_augmented = augment_gene_data(gene_data, spatial_data, Adj_WT=0.45, neighbour_k=10)
 
     processed_df = pd.DataFrame(gene_data_augmented, index=processed_df.index, columns=processed_df.columns)
     print("processed_df:", processed_df.shape)
