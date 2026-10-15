@@ -1,26 +1,58 @@
-# MGST：A Multi-modal Graph Fusion-Driven Framework for Spatial Transcriptomics Region Identification and Functional Microenvironment Analysis
-# Overview
- Spatial transcriptomics technology enables the systematic acquisition of high-throughput gene expression data on a genome-wide scale while preserving the spatial information of tissues in situ, offering significant opportunities to uncover the structural and functional heterogeneity of tissue microenvironments. Existing methods for 
-spatial domain identification face limitations in multimodal collaboration and dynamic graph modeling, making it difficult to fully incorporate spatial, expression, and 
-morphological information, and often suffer from interference due to high-dimensional noise and data sparsity. In this study, we propose the MGST framework, which leverages 
-a multimodal graph fusion strategy to effectively integrate spatial location, gene expression, and tissue morphology information. The framework employs a dynamic adaptive 
-graph structure optimization mechanism, overcoming the limitations of traditional graph neural networks that rely on static adjacency relationships, thus enhancing feature 
-expression discrimination and generalization performance. Evaluations on multiple datasets (including human DLPFC and breast cancer) demonstrate the superior performance of 
-MGST in spatial domain identification. Moreover, MGST not only accurately identifies tumor subtypes associated with immune suppression and metabolic adaptation in breast 
-cancer but also reveals functional units regulated by calcium signaling in the mouse forebrain, providing a reliable analytical framework for systematically unveiling the 
-complex heterogeneity of tissue microenvironments.
+# MGST
 
-# Overview of the repository
-image.py    This file contains functions related to image processing, particularly for extracting features from images and performing cropping operations.
-main.py	    This file serves as the main entry point for the script and coordinates the data processing, feature extraction, and model training.
-MLPmodel.py	Defines the MLPFusion class, which is a Multi-Layer Perceptron (MLP) used to fuse adjacency matrices from different data sources (e.g., gene expression, spatial 
-            data, and image features).
-spatial.py	Contains functions related to spatial data processing
-VAEmodel.py	Defines the GAE_VAE class, which is a Graph Autoencoder-Variational Autoencoder (GAE-VAE) model used for dimensionality reduction and clustering of graph- 
-            structured data.
-Run_MRE.py:Sample Data Test File. We can simply modify the path and run it directly
-# Overview of the repository
-The DLPFC dataset (http://research.libd.org/spatialLIBD)
-human breast cancer and mouse brain FFPE samples (https://db.cngb.org/stomics/datasets/)
-Mouse Forebrain(https://doi.org/10.5281/zenodo.10968451).
-The OSMFISH platform provided the MERFISH mouse brain dataset (http://linnarssonlab.org/osmFISH/).
+A modular implementation of MGST with 9-dimensional edge descriptors, edge-conditioned multimodal graph fusion, and a VAE-based graph encoder.
+
+## Setup
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Configure the input and output directories in `mgst/config.py`. The defaults retain the paths and active dataset from the supplied script (`151671`, 5 clusters, seed 42, 60 epochs).
+
+The expected input files are:
+
+```text
+DLPFC/
+└── 151671/
+    ├── filtered_feature_bc_matrix.csv
+    ├── metadata.csv
+    └── spatial/
+        ├── tissue_hires_image.png
+        ├── scalefactors_json.json
+        └── tissue_positions_list.csv
+```
+
+`tissue_positions.csv` is also supported in place of `tissue_positions_list.csv`.
+
+## Run
+
+```bash
+python run.py
+```
+
+The only normal console output is the training progress bar. The only generated output file is:
+
+```text
+<OUTPUT_ROOT>/151671_seed42_clusters.csv
+```
+
+The CSV contains `spot_name` and `cluster`. It stores the final-epoch KMeans clustering, not the epoch with the highest ARI. Reference labels are not used for training, selection, or clustering; if present, they are accessed once after training for a final-epoch ARI calculation that is neither printed nor saved.
+
+The feature construction, spatial radius, graph similarity calculations, 9D edge descriptors, fusion MLP (9 → 128 → 128 → 3), VAE encoder/decoder, loss schedule, and hyperparameters follow the active code path of the supplied script. No plots, intermediate latents, per-epoch results, summaries, or training logs are generated.
+
+The first execution may require downloading the pretrained ResNet-18 weights unless they are already cached by PyTorch. The dataset and pretrained weights are not bundled in this repository.
+
+## Layout
+
+```text
+run.py
+mgst/
+  config.py
+  preprocessing.py
+  graphs.py
+  model.py
+  training.py
+  pipeline.py
+requirements.txt
+```
