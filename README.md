@@ -8,7 +8,7 @@ A modular implementation of MGST with 9-dimensional edge descriptors, edge-condi
 python -m pip install -r requirements.txt
 ```
 
-Configure the input and output directories in `mgst/config.py`. The defaults retain the paths and active dataset from the supplied script (`151671`, 5 clusters, seed 42, 60 epochs).
+Configure the input and output directories in `mgst/config.py`. The defaults retain the paths and active dataset from the supplied script.
 
 The expected input files are:
 
